@@ -69,8 +69,10 @@ public class Main {
      * This function uses MergeSort to sort the arrayList.
      * @param arrayList the ArrayList to be sorted. arrayList cannot contain duplicates
      */
-    public static void mergeSort(ArrayList<Integer> arrayList) {
+    public static void mergeSort(ArrayList<Integer> arrayList)
+    {
         sort(arrayList, 0, arrayList.size());
+        merge(arrayList, 0, arrayList.size()/2, arrayList.size());
     }
 
     /**
@@ -82,10 +84,14 @@ public class Main {
      * @param lo the index of the first element in the range
      * @param hi the index of the last element in the range + 1.
      */
-    public static void sort(ArrayList<Integer> arrayList, int lo, int hi) {
-        int half = (lo + hi) / 2;
-
-        sort(arrayList, lo - 1, hi - 1);
+    public static void sort(ArrayList<Integer> arrayList, int lo, int hi)
+    {
+        if(hi - lo <= 1)
+        {
+            return;
+        }
+        sort(arrayList, lo, (hi+lo - 1)/2);
+        sort(arrayList, (lo+hi)/2, hi);
     }
 
     /**
@@ -99,16 +105,28 @@ public class Main {
      * @param hi the index of the last element in the second range + 1.
      */
     public static void merge(ArrayList<Integer> arrayList, int lo, int mid, int hi) {
-        ArrayList<Integer> tempArrayList = new ArrayList<Integer>();
+        ArrayList<Integer> sortedArrayList = new ArrayList<Integer>();
+
         sort(arrayList, lo, mid);
-        for(int i = 0; i < mid; i++)
-        {
-             tempArrayList.set(i, arrayList.get(i));
+        sort(arrayList, mid, hi);
+
+        for (int i = lo; i < hi; i++) {
+            sortedArrayList.add(i, arrayList.get(i));
         }
-        for(int i = mid + 1; i <= hi; i++)
-        {
-            tempArrayList.set(i, arrayList.get(i));
+
+
+        for(int sorted = lo; sorted < sortedArrayList.size(); sorted++) {
+            for (int i = lo; i < hi; i++)
+            {
+                if (sortedArrayList.get(i) > sortedArrayList.get(i + 1) && i < hi - 1) {
+                    int temp = sortedArrayList.get(i);
+                    sortedArrayList.set(i, sortedArrayList.get(i + 1));
+                    sortedArrayList.set(i + 1, temp);
+                }
+            }
         }
+
+
 
     }
 }
