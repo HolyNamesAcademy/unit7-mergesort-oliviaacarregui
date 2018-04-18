@@ -136,5 +136,10 @@ public class Main {
                 i++;
             }
         }
+        for (int index = 0; index < tempArray.size(); index++) {
+
+            arrayList.set(index + lo, tempArray.get(index));
+
+        }
     }
 }
