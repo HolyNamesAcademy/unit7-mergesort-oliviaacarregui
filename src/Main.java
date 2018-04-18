@@ -90,8 +90,11 @@ public class Main {
         {
             return;
         }
-        sort(arrayList, lo, (hi+lo - 1)/2);
-        sort(arrayList, (lo+hi)/2, hi);
+
+        int mid = (hi + lo) / 2;
+        sort(arrayList, lo, mid);
+        sort(arrayList, mid, hi);
+        merge(arrayList, lo, mid, hi);
     }
 
     /**
@@ -104,29 +107,34 @@ public class Main {
      * @param mid the boundary point of the two ranges. arrayList[mid] is in the second range.
      * @param hi the index of the last element in the second range + 1.
      */
-    public static void merge(ArrayList<Integer> arrayList, int lo, int mid, int hi) {
-        ArrayList<Integer> sortedArrayList = new ArrayList<Integer>();
+    public static void merge(ArrayList<Integer> arrayList, int lo, int mid, int hi)
+    {
+        ArrayList<Integer> tempArray = new ArrayList<Integer>();
+        int i = lo;
+        int j = mid;
 
-        sort(arrayList, lo, mid);
-        sort(arrayList, mid, hi);
-
-        for (int i = lo; i < hi; i++) {
-            sortedArrayList.add(i, arrayList.get(i));
-        }
-
-
-        for(int sorted = lo; sorted < sortedArrayList.size(); sorted++) {
-            for (int i = lo; i < hi; i++)
+        while(i < mid || j < hi)
+        {
+            if(j == hi)
             {
-                if (sortedArrayList.get(i) > sortedArrayList.get(i + 1) && i < hi - 1) {
-                    int temp = sortedArrayList.get(i);
-                    sortedArrayList.set(i, sortedArrayList.get(i + 1));
-                    sortedArrayList.set(i + 1, temp);
-                }
+                tempArray.add(arrayList.get(i));
+                i++;
+            }
+            else if(i == mid)
+            {
+                tempArray.add(arrayList.get(j));
+                j++;
+            }
+            else if(arrayList.get(j) < arrayList.get(i))
+            {
+                tempArray.add(arrayList.get(j));
+                j++;
+            }
+            else
+            {
+                tempArray.add(arrayList.get(i));
+                i++;
             }
         }
-
-
-
     }
 }
